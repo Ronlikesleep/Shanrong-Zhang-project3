@@ -6,9 +6,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const app = express();
+const helper = require('./apis/cookie.helper.cjs');
 
 
-const mongoDBEndpoint = 'mongodb+srv://ron:banana1@cluster0.mvblcup.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const mongoDBEndpoint = 'mongodb+srv://ron:banana1@cluster0.mvblcup.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(mongoDBEndpoint, {
     useNewUrlParser: true,
 })
@@ -26,7 +27,7 @@ app.use('/api/users/', users);
 app.use('/api/password/', password)
 
 
-let frontend_dir = path.join(__dirname, '..', 'frontend', 'dist')
+let frontend_dir = path.join(__dirname, '..', '..', 'frontend');
 
 app.use(express.static(frontend_dir));
 app.get('*', function (req, res) {
@@ -36,6 +37,6 @@ app.get('*', function (req, res) {
 
 
 
-app.listen(process.env.PORT || 8000, function() {
+app.listen(process.env.PORT || 8000, function () {
     console.log("Starting server now...")
 })
