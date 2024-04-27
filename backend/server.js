@@ -4,6 +4,7 @@ const password = require('./apis/password.api.cjs');
 const users = require('./apis/user.api.cjs');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const app = express();
 
 
@@ -16,19 +17,16 @@ const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
 
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/users', users);
+app.use('/api/user/', users);
+app.use('/api/password/', password)
 
-app.get('/', (req, res) => {
-    res.send(200);
-});
 
-app.use('/api/password', password);
-
-let frontend_dir = path.join(__dirname, 'dist')
+let frontend_dir = path.join(__dirname, '..', 'frontend', 'dist')
 
 app.use(express.static(frontend_dir));
 app.get('*', function (req, res) {
@@ -36,6 +34,8 @@ app.get('*', function (req, res) {
     res.sendFile(path.join(frontend_dir, "index.html"));
 });
 
-app.listen(process.env.PORT || 8000, function () {
-    console.log("Starting app now...")
+
+
+app.listen(process.env.PORT || 8000, function() {
+    console.log("Starting server now...")
 })
